@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/bookmarks
+    username: user
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate: #implementation of JPA (not Spring JPA)
+      ddl-auto: update #what we want hibernate to do when the application starts, in this case, update the schema without dropping data (create will recreate tables and drop data)
+    show-sql: true #shows the SQL query being run in the console
+    properties:
+      hibernate:
+        format_sql: true #nicely formats SQL
+    database: postgresql #indicates which type of database is being used
+    database-platform: org.hibernate.dialect.PostgreSQLDialect #indicates what SQL dialect is being used (postgres in this case), otherwise Spring will assume
