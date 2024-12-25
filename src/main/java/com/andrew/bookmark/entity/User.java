@@ -8,12 +8,18 @@ public class User {
 
     @Id
     @GeneratedValue
-    Integer id;
+    private Integer id;
 
     @Column(unique = true)
-    String username;
+    private String username;
 
-    String password;
+    private String password;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL
+    )
+    private Token token;
 
     public User(){}
 

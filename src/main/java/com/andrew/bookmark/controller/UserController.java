@@ -1,5 +1,6 @@
 package com.andrew.bookmark.controller;
 
+import com.andrew.bookmark.dto.TokenResponseDto;
 import com.andrew.bookmark.dto.UserDto;
 import com.andrew.bookmark.entity.User;
 import com.andrew.bookmark.service.service.UserService;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@Valid @RequestBody UserDto dto) {
+    public ResponseEntity<TokenResponseDto> loginUser(@Valid @RequestBody UserDto dto) {
         return this.service.loginUser(dto);
     }
 
