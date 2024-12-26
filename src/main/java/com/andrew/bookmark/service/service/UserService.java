@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,6 +55,7 @@ public class UserService {
         if(foundToken.isPresent()) {
             Token token = foundToken.get();
             token.setToken(UUID.randomUUID().toString());
+            token.setExpirationTime(LocalDateTime.now().plus(30, ChronoUnit.MINUTES));
             this.tokenRepository.save(token);
             return ResponseEntity.ok(new TokenResponseDto(token.getToken()));
         }else{

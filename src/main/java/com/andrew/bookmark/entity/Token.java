@@ -3,6 +3,7 @@ package com.andrew.bookmark.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +14,7 @@ public class Token {
 
     private String token;
 
-    //TODO: Add an expiration date to the tokens
+    private LocalDateTime expirationTime;
 
     @OneToOne
     @JoinColumn(
@@ -23,6 +24,7 @@ public class Token {
 
     public Token(){
         this.token = UUID.randomUUID().toString();
+        this.expirationTime = LocalDateTime.now().plus(30, ChronoUnit.MINUTES);
     }
 
     public Integer getId() {
@@ -47,5 +49,13 @@ public class Token {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(LocalDateTime expirationTime) {
+        this.expirationTime = expirationTime;
     }
 }
