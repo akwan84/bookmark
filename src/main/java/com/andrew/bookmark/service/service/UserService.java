@@ -65,4 +65,18 @@ public class UserService {
             return ResponseEntity.ok(new TokenResponseDto(token.getToken()));
         }
     }
+
+    public void logoutUser(String token) {
+        String tokenString = token.startsWith("Bearer ")
+                ? token.substring(7)
+                : token;
+
+        //Need to make sure something is actually going to be deleted
+        Optional<Token> foundToken = this.tokenRepository.findByToken(tokenString);
+        if(!foundToken.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Token does not exist");
+        }
+
+        this.tokenRepository.deleteToken(tokenString);
+    }
 }
