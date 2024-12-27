@@ -11,7 +11,7 @@ import java.util.Random;
 
 @Service
 public class URLMapper {
-    private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+    private static final String CHARS = "abcdefghijklmnopqrstuvwxyz1234567890";
     private static final int CODE_LENGTH = 6;
 
     public URL toURL(URLDto dto, User user) {
