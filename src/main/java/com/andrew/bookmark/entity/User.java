@@ -1,6 +1,9 @@
 package com.andrew.bookmark.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="app_user")
@@ -20,6 +23,12 @@ public class User {
             cascade = CascadeType.ALL
     )
     private Token token;
+
+    @OneToMany(
+            mappedBy = "user"
+    )
+    @JsonManagedReference
+    private List<URL> urls;
 
     public User(){}
 
@@ -53,5 +62,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<URL> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<URL> urls) {
+        this.urls = urls;
+    }
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
     }
 }
