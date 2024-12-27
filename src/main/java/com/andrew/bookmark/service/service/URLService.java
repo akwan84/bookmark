@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -40,5 +42,38 @@ public class URLService {
         urlRepository.save(url);
 
         return urlMapper.toOutputDto(url);
+    }
+
+    public RedirectView redirect(String shortCode) {
+        Optional<URL> url = this.urlRepository.findByShortCode(shortCode);
+        if(!url.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL does not exist");
+        }
+
+        URL foundUrl = url.get();
+        RedirectView redirectView = new RedirectView();
+
+        if(foundUrl.getType() == 2 && isExpired(foundUrl.getExpirationTime())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This link has expired");
+        }
+
+        if(foundUrl.getType() == 3 && !foundUrl.isActive()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid link");
+        }
+
+        redirectView.setUrl(foundUrl.getFullUrl());
+        if(foundUrl.getType() == 1 || foundUrl.getType() == 2) {
+            foundUrl.setNumVisits(foundUrl.getNumVisits() + 1);
+        } else {
+            foundUrl.setActive(false);
+        }
+        this.urlRepository.save(foundUrl);
+        return redirectView;
+    }
+
+    private boolean isExpired(LocalDateTime dateTime) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return now.isAfter(dateTime);
     }
 }

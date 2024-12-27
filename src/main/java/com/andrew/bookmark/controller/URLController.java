@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,11 @@ public class URLController {
     public URLOutputDto createUrl(@RequestHeader("Authorization") String token, @RequestBody URLDto urlDto) {
         User user = this.authService.verify(token);
         return this.urlService.create(urlDto, user);
+    }
+
+    @GetMapping("/url/{code}")
+    public RedirectView redirect(@PathVariable("code") String shortCode) {
+        return this.urlService.redirect(shortCode);
     }
 
     @ExceptionHandler(ResponseStatusException.class)

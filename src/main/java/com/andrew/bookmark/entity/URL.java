@@ -17,6 +17,8 @@ public class URL {
     @Column(unique = true)
     private String shortCode;
 
+    private int numVisits;
+
     private int type; //1 - normal, 2 - temporary, 3 - one-time
 
     //expiration time for temporary links
@@ -100,5 +102,13 @@ public class URL {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getNumVisits() {
+        return numVisits;
+    }
+
+    public void setNumVisits(int numVisits) {
+        this.numVisits = numVisits;
     }
 }
