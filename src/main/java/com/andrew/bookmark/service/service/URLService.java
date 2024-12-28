@@ -13,8 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class URLService {
@@ -69,6 +70,34 @@ public class URLService {
         }
         this.urlRepository.save(foundUrl);
         return redirectView;
+    }
+
+    public List<URLOutputDto> getUrls(User user) {
+        List<URL> urls = this.urlRepository.findAllByUser(user);
+
+        return urls.stream().map(this.urlMapper::toOutputDto).collect(Collectors.toList());
+    }
+
+    public URLOutputDto updateUrl(User user, URLDto newDto, String shortCode) {
+        Optional<URL> foundUrl = this.urlRepository.findByShortCode(shortCode);
+        if(!foundUrl.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL does not exist");
+        }
+
+        if(newDto.type() == 2 && newDto.length() < 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Temporary links must have a lifetime of 1 minute or more");
+        }
+
+        URL url = foundUrl.get();
+
+        if(!user.getId().equals(url.getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        URL updated = this.urlMapper.updateURL(newDto, url);
+        this.urlRepository.save(updated);
+
+        return this.urlMapper.toOutputDto(updated);
     }
 
     private boolean isExpired(LocalDateTime dateTime) {

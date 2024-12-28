@@ -7,6 +7,8 @@ import com.andrew.bookmark.entity.User;
 import com.andrew.bookmark.service.service.URLService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
 @Service
@@ -20,11 +22,23 @@ public class URLMapper {
         return url;
     }
 
+    public URL updateURL(URLDto dto, URL url) {
+        url.setFullUrl(dto.fullUrl());
+        url.setType(dto.type());
+        if(dto.type() == 2) {
+            url.setExpirationTime(LocalDateTime.now().plus(dto.length(), ChronoUnit.MINUTES));
+        } else if (dto.type() == 3) {
+            url.setActive(true);
+        }
+        return url;
+    }
+
     public URLOutputDto toOutputDto(URL url) {
 
         return new URLOutputDto(
                 url.getFullUrl(),
                 url.getShortCode(),
+                url.getNumVisits(),
                 url.getType(),
                 url.getType() == 2 ? url.getExpirationTime() : null
         );

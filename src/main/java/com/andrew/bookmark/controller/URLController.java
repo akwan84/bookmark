@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,6 +55,30 @@ public class URLController {
     @GetMapping("/url/{code}")
     public RedirectView redirect(@PathVariable("code") String shortCode) {
         return this.urlService.redirect(shortCode);
+    }
+
+    /**
+     * GET endpoint to get all bookmarked URLs of a user
+     * @param token Authentication token from the authorization header for the logged-in user
+     * @return List containing all bookmarked URLs and information about them
+     */
+    @GetMapping("/url")
+    public List<URLOutputDto> getUrls(@RequestHeader("Authorization") String token) {
+        User user = this.authService.verify(token);
+        return this.urlService.getUrls(user);
+    }
+
+    /**
+     * PUT endpoint to update a bookmarked URLs information (change url, extend expiration, re-activate one-time link, ...)
+     * @param token Authentication token from the authorization header for the logged-in user
+     * @param shortCode Short code mapped to the bookmarked URL
+     * @param newDto Information about the bookmarked URL to update
+     * @return Information about the updated bookmarked URL
+     */
+    @PutMapping("/url/{code}")
+    public URLOutputDto updateUrl(@RequestHeader("Authorization") String token, @PathVariable("code") String shortCode, @RequestBody URLDto newDto) {
+        User user = this.authService.verify(token);
+        return this.urlService.updateUrl(user, newDto, shortCode);
     }
 
     /**
