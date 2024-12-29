@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserMapper {
+    /**
+     * Map user input DTO to User entity and hash password
+     * @param dto Input dto
+     * @return Mapped User entity
+     */
     public User toUser(UserDto dto) {
         String hashedPw = BCrypt.hashpw(dto.password(), BCrypt.gensalt());
         return new User(

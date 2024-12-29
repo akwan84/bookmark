@@ -4,7 +4,6 @@ import com.andrew.bookmark.dto.URLDto;
 import com.andrew.bookmark.dto.URLOutputDto;
 import com.andrew.bookmark.entity.URL;
 import com.andrew.bookmark.entity.User;
-import com.andrew.bookmark.service.service.URLService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,12 +15,24 @@ public class URLMapper {
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyz1234567890";
     private static final int CODE_LENGTH = 6;
 
+    /**
+     * Create URL entity from input DTO by randomly generating a short code
+     * @param dto URL dto
+     * @param user User creating the bookmark
+     * @return URL entity
+     */
     public URL toURL(URLDto dto, User user) {
         URL url = new URL(dto.fullUrl(), generate(), dto.type(), dto.length());
         url.setUser(user);
         return url;
     }
 
+    /**
+     * Update URL entity
+     * @param dto URL dto
+     * @param url URL entity to update
+     * @return Updated URL entity
+     */
     public URL updateURL(URLDto dto, URL url) {
         url.setFullUrl(dto.fullUrl());
         url.setType(dto.type());
@@ -33,6 +44,11 @@ public class URLMapper {
         return url;
     }
 
+    /**
+     * Map URL entity to output DTO
+     * @param url URL to map
+     * @return Output DTO
+     */
     public URLOutputDto toOutputDto(URL url) {
 
         return new URLOutputDto(
@@ -44,6 +60,10 @@ public class URLMapper {
         );
     }
 
+    /**
+     * Randomly generate alphanumeric short code
+     * @return generated short code
+     */
     private String generate() {
         Random random = new Random();
         StringBuilder str = new StringBuilder();
