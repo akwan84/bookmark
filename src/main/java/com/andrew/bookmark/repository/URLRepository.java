@@ -11,11 +11,28 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository for URL entities
+ */
 public interface URLRepository extends JpaRepository<URL, Integer> {
+    /**
+     * Query to find bookmarked URLs by their mapped short codes
+     * @param shortCode short code
+     * @return URL entity if it exists
+     */
     Optional<URL> findByShortCode(String shortCode);
 
+    /**
+     * Query to find URLs bookmarked by a user
+     * @param user user
+     * @return URLs bookmarked by the user
+     */
     List<URL> findAllByUser(User user);
 
+    /**
+     * Query to delete a bookmarked URL using associated short code
+     * @param shortCode short code
+     */
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM url WHERE short_code = :code", nativeQuery = true)
