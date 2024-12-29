@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * Controller for User endpoints
  */
+@CrossOrigin(origins = "http://localhost:3000") //temporary solution to fix CORS issue, will change later
 @RestController
 public class UserController {
     private final UserService service;
