@@ -1,0 +1,5 @@
+# Bookmark Manager Application
+## Inspiration
+This inspiration for this project was two-fold. During my internship, I had the chance to work on a simple microservice for URL shortening. The straightforward nature of that project gave me a clear understanding of how to structure and approach similar challenges. Building on this foundation, I saw an opportunity to extend the concept beyond a basic URL shortener, and add additional, meaningful features reflected in this project.
+
+The other key piece of inspiration was the very beneficial learning experience. Having already completed a full-stack fitness tracker application using MongoDB and Express.js backend, I sought to challenge myself by exploring different technologies. Having gained experience with lightweight frameworks and NoSQL databases, I wanted to delve into a more robust framework and relational database, making Spring Boot and PostgreSQL a natural choice.
