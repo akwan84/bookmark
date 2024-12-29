@@ -100,6 +100,21 @@ public class URLService {
         return this.urlMapper.toOutputDto(updated);
     }
 
+    public void deleteUrl(User user, String shortCode) {
+        Optional<URL> foundUrl = this.urlRepository.findByShortCode(shortCode);
+        if(!foundUrl.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL does not exist");
+        }
+
+        URL url = foundUrl.get();
+
+        if(!user.getId().equals(url.getUser().getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+
+        this.urlRepository.deleteUrl(shortCode);
+    }
+
     private boolean isExpired(LocalDateTime dateTime) {
         LocalDateTime now = LocalDateTime.now();
 

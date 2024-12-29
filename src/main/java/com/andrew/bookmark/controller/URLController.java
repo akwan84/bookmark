@@ -82,6 +82,17 @@ public class URLController {
     }
 
     /**
+     * DELETE endpoint to delete a bookmarked URL
+     * @param token Authentication token from the authorization header for the logged-in user
+     * @param shortCode Short code mapped to the bookmarked URL
+     */
+    @DeleteMapping("/url/{code}")
+    public void deleteUrl(@RequestHeader("Authorization") String token, @PathVariable("code") String shortCode) {
+        User user = this.authService.verify(token);
+        this.urlService.deleteUrl(user, shortCode);
+    }
+
+    /**
      * Exception handler for ResponseStatusException
      * @param e Exception caught
      * @return Formatted response containing error message and HTTP status code
