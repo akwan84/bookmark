@@ -35,6 +35,11 @@ public class UserService {
     }
 
     public void registerUser(UserDto dto){
+        Optional<User> foundUser = this.userRepository.findByUsername(dto.username());
+        if(foundUser.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username taken");
+        }
+
         User user = this.mapper.toUser(dto);
         this.userRepository.save(user);
     }
