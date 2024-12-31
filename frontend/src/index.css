@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#overlay {
+  position: fixed;
+  bottom : 0;
+  right : 0;
+  width : 100%; 
+  height : 100vh;
+  background-color : rgba(0, 0, 0, 0.8);
+}
+
+#creation-box {
+  width: 40%;
+  height: 40vh;
+  margin-left: 30%;
+  margin-top: 30vh;
+  background-color: white;
+}
