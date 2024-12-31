@@ -10,8 +10,6 @@ function App() {
 	const [data, setData] = useState([]);
 	const [type, setType] = useState(1);
 
-	const initialRender = useRef(true);
-
 	useEffect(() => {
 		if(!loggedIn) return;
 		const fetchData = async() => {
@@ -21,11 +19,17 @@ function App() {
 		fetchData();
 	}, [loggedIn])
 
+	const refreshData = async() => {
+        const response = await makeRequest("GET", "/url", {}, token);
+		setData(response.data);
+    }
+
 	return (
 		<div className="App">
 			{loggedIn ? 
 				<Home
 					data = {data}
+					refreshData={refreshData}
 					type = {type}
 					setType={setType}
 				/> :

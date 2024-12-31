@@ -1,8 +1,12 @@
 import Link from "./Link";
 
-const Home = ({ data, type, setType }) => {
+const Home = ({ data, refreshData, type, setType }) => {
+
     return (
         <div>
+            <div>
+                <button onClick={refreshData}>Refresh</button>
+            </div>
             <div>
                 <button onClick = {() => setType(1)}>Permanent</button>
                 <button onClick = {() => setType(2)}>Temporary</button>
