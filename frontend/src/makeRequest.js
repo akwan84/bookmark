@@ -17,10 +17,16 @@ const makeRequest = async (method, url, body, token) => {
                 `${process.env.REACT_APP_API_URL}${url}`,
                 headers
             );
+        } else if (method === "DELETE") {
+            response = await axios.delete(
+                `${process.env.REACT_APP_API_URL}${url}`,
+                headers
+            )
         }
 
         return response;
     } catch (error) {
+        //TODO: More verbose error handling
         return error;
     }
 }

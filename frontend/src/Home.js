@@ -19,13 +19,13 @@ const Home = ({ data, refreshData, type, setType, token }) => {
                     <button onClick = {() => setType(3)}>One-Time</button>
                 </div>
                 {type === 1 && data.filter(bookmark => bookmark.type === 1).map(bookmark => (
-                    <Link bookmark={bookmark}/>
+                    <Link bookmark={bookmark} token={token} refreshData={refreshData}/>
                 ))}
                 {type === 2 && data.filter(bookmark => bookmark.type === 2).map(bookmark => (
-                    <Link bookmark={bookmark}/>
+                    <Link bookmark={bookmark} token={token} refreshData={refreshData}/>
                 ))}
                 {type === 3 && data.filter(bookmark => bookmark.type === 3).map(bookmark => (
-                    <Link bookmark={bookmark}/>
+                    <Link bookmark={bookmark} token={token} refreshData={refreshData}/>
                 ))}
             </div>
             {showOverlay && <div id = "overlay">
