@@ -22,10 +22,10 @@ const Login = ({setLoggedIn, setToken}) => {
     
     return (
         <div>
-            <label for="username">Username</label>
+            <label htmlFor="username">Username</label>
             <input type="text" name = "username" onChange={e => setUsername(e.target.value)}></input>
             <br/>
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
             <input type="password" name = "password" onChange={e => setPassword(e.target.value)}></input>
             <br/>
             <button type="submit" onClick={submitLogin} >Login</button>
