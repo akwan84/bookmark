@@ -22,6 +22,12 @@ const makeRequest = async (method, url, body, token) => {
                 `${process.env.REACT_APP_API_URL}${url}`,
                 headers
             )
+        } else if (method === "PUT") {
+            response = await axios.put(
+                `${process.env.REACT_APP_API_URL}${url}`,
+                body,
+                headers
+            );
         }
 
         return response;

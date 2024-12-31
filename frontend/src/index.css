@@ -21,7 +21,7 @@ code {
   background-color : rgba(0, 0, 0, 0.8);
 }
 
-#creation-box {
+.overlay-box {
   width: 40%;
   height: 40vh;
   margin-left: 30%;

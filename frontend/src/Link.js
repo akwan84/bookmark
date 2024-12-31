@@ -1,6 +1,6 @@
 import makeRequest from "./makeRequest";
 
-const Link = ({ bookmark, token, refreshData }) => {
+const Link = ({ bookmark, token, refreshData, setShowUpdateOverlay, setCurBookmark }) => {
     const copyToClipboard = async(textToCopy) => {
         try {
             await navigator.clipboard.writeText(textToCopy);
@@ -19,6 +19,11 @@ const Link = ({ bookmark, token, refreshData }) => {
         }
     }
 
+    const triggerUpdate = () => {
+        setCurBookmark(bookmark);
+        setShowUpdateOverlay(true);
+    }
+
     const shortUrl = `${process.env.REACT_APP_API_URL}/url/${bookmark.shortCode}`;
     return (
         <div style={{border: "1px solid"}}>
@@ -26,10 +31,11 @@ const Link = ({ bookmark, token, refreshData }) => {
             <button onClick={() => copyToClipboard(shortUrl)}>Copy Short URL</button>
             <p>Full URL: <a href={bookmark.fullUrl} target="_blank">{bookmark.fullUrl}</a></p>
             <button onClick={() => copyToClipboard(bookmark.fullUrl)}>Copy Full URL</button>
-            <p>Number of Visits: {bookmark.numVisits}</p>
+            {bookmark.type !== 3 && <p>Number of Visits: {bookmark.numVisits}</p>}
             {bookmark.type === 2 && <p>Expiration Date: {bookmark.expiration}</p>}
             {bookmark.type === 3 && <p>Active: {bookmark.isActive ? 'True' : 'False'}</p>}
             <button onClick={deleteLink}>Delete</button>
+            <button onClick={triggerUpdate}>Update</button>
         </div>
     );
 }
