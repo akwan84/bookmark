@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * Controller for URL endpoints
  */
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class URLController {
     private URLService urlService;

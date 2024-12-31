@@ -56,7 +56,8 @@ public class URLMapper {
                 url.getShortCode(),
                 url.getNumVisits(),
                 url.getType(),
-                url.getType() == 2 ? url.getExpirationTime() : null
+                url.getType() == 2 ? url.getExpirationTime() : null,
+                url.getType() == 3 ? url.isActive() : true
         );
     }
 
