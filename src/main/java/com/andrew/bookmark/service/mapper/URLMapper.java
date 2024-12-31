@@ -22,7 +22,7 @@ public class URLMapper {
      * @return URL entity
      */
     public URL toURL(URLDto dto, User user) {
-        URL url = new URL(dto.fullUrl(), generate(), dto.type(), dto.length());
+        URL url = new URL(dto.fullUrl(), generate(), dto.type(), dto.length(), dto.active());
         url.setUser(user);
         return url;
     }

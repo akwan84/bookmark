@@ -8,13 +8,15 @@ import jakarta.validation.constraints.NotEmpty;
  * @param fullUrl URL to bookmark
  * @param type Bookmark type: 1 - normal, 2 - temporary, 3 - one-time
  * @param length For temporary links, number of minutes for the link to be active
+ * @param active For one-time links, whether the link will be active or not
  */
 public record URLDto(
         @NotEmpty
         String fullUrl,
         @NotEmpty
         int type,
-        int length
+        int length,
+        boolean active
 ) {
 
 }

@@ -47,8 +47,9 @@ public class URL {
      * @param shortCode Short code mapped to the bookmarked URL
      * @param type Type of bookmark being made (normal, temporary, one-time)
      * @param length For temporary links, number of minutes the link will be active for
+     * @param active For one-time links, whether or not they are active
      */
-    public URL(String fullUrl, String shortCode, int type, int length) {
+    public URL(String fullUrl, String shortCode, int type, int length, boolean active) {
         this.fullUrl = fullUrl;
         this.shortCode = shortCode;
         this.type = type;
@@ -56,7 +57,7 @@ public class URL {
         if(type == 2) { //set expiration time for temporary links
             this.expirationTime = LocalDateTime.now().plus(length, ChronoUnit.MINUTES);
         } else if(type == 3) { //set link as active for one-time links
-            this.active = true;
+            this.active = active;
         }
     }
 
