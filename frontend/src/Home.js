@@ -2,12 +2,22 @@ import { useState } from "react";
 import Link from "./Link";
 import CreationBox from "./CreationBox";
 import UpdateBox from "./UpdateBox";
+import makeRequest from "./makeRequest";
 
-const Home = ({ data, refreshData, type, setType }) => {
+const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
 
     const [showOverlay, setShowOverlay] = useState(false);
     const [showUpdateOverlay, setShowUpdateOverlay] = useState(false);
     const [curBookmark, setCurBookmark] = useState({});
+
+    const logout = async() => {
+        const response = await makeRequest("POST", "/logout", {});
+        if(response.status === 200) {
+            setLoggedIn(false);
+        } else {
+            alert(response.response.data["message"]);
+        }
+    }
 
     return (
         <div style={{position:"relative"}}>
@@ -15,6 +25,7 @@ const Home = ({ data, refreshData, type, setType }) => {
                 <div>
                     <button onClick={refreshData}>Refresh</button>
                     <button onClick={() => setShowOverlay(true)}>Create</button>
+                    <button onClick={logout}>Logout</button>
                 </div>
                 <div>
                     <button onClick = {() => setType(1)}>Permanent</button>

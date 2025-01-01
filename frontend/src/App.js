@@ -31,6 +31,7 @@ function App() {
 					refreshData={refreshData}
 					type = {type}
 					setType={setType}
+					setLoggedIn={setLoggedIn}
 				/> :
 				<Login 
 					setLoggedIn = {setLoggedIn}
