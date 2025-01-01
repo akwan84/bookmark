@@ -23,15 +23,20 @@ const Login = ({ setLoggedIn, refreshData }) => {
     }
     
     return (
-        <div>
-            <label htmlFor="username">Username</label>
-            <input type="text" name = "username" onChange={e => setUsername(e.target.value)}></input>
+        <div className="outer">
+            <div id="login-spacer"></div>
+            <label htmlFor="username" className="login-header">Username</label>
             <br/>
-            <label htmlFor="password">Password</label>
-            <input type="password" name = "password" onChange={e => setPassword(e.target.value)}></input>
+            <input type="text" name = "username" onChange={e => setUsername(e.target.value)} className="login-input"></input>
             <br/>
-            <button type="submit" onClick={submitLogin}>Login</button>
-            <button onClick={() => setShowRegOverlay(true)}>Register</button>
+            <br/>
+            <label htmlFor="password" className="login-header">Password</label>
+            <br/>
+            <input type="password" name = "password" onChange={e => setPassword(e.target.value)} className="login-input"></input>
+            <br/>
+            <button type="submit" onClick={submitLogin} className="login-button">Login</button>
+            <br/>
+            <button onClick={() => setShowRegOverlay(true)} className="login-button">Register</button>
             {showRegOverlay && <div id = "overlay">
                 <RegistrationBox setShowRegOverlay={setShowRegOverlay}/>
             </div>}
