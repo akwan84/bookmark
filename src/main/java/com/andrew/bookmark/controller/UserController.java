@@ -3,6 +3,7 @@ package com.andrew.bookmark.controller;
 import com.andrew.bookmark.dto.TokenResponseDto;
 import com.andrew.bookmark.dto.UserDto;
 import com.andrew.bookmark.service.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.Map;
 /**
  * Controller for User endpoints
  */
-@CrossOrigin(origins = "http://localhost:3000") //temporary solution to fix CORS issue, will change later
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true") //temporary solution to fix CORS issue, will change later
 @RestController
 public class UserController {
     private final UserService service;
@@ -41,20 +42,22 @@ public class UserController {
     /**
      * POST endpoint to log in a user
      * @param dto Username and password of the user to login
+     * @param response Response object
      * @return Authentication token upon successful login
      */
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDto> loginUser(@Valid @RequestBody UserDto dto) {
-        return this.service.loginUser(dto);
+    public void loginUser(@Valid @RequestBody UserDto dto, HttpServletResponse response) {
+        this.service.loginUser(dto, response);
     }
 
     /**
      * POST endpoint to log out a user
      * @param token Authentication token of the user to logout
+     * @param response Response object
      */
     @PostMapping("/logout")
-    public void logout(@RequestHeader("Authorization") String token) {
-        this.service.logoutUser(token);
+    public void logout(@CookieValue("authToken")String token,  HttpServletResponse response) {
+        this.service.logoutUser(token, response);
     }
 
     /**

@@ -7,6 +7,8 @@ import com.andrew.bookmark.entity.User;
 import com.andrew.bookmark.repository.TokenRepository;
 import com.andrew.bookmark.repository.UserRepository;
 import com.andrew.bookmark.service.mapper.UserMapper;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +46,7 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public ResponseEntity<TokenResponseDto> loginUser(UserDto dto) {
+    public void loginUser(UserDto dto, HttpServletResponse response) {
         Optional<User> foundUser = this.userRepository.findByUsername(dto.username());
         if(!foundUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
@@ -60,28 +62,43 @@ public class UserService {
         if(foundToken.isPresent()) {
             Token token = foundToken.get();
             token.setToken(UUID.randomUUID().toString());
-            token.setExpirationTime(LocalDateTime.now().plus(30, ChronoUnit.MINUTES));
+            token.setExpirationTime(LocalDateTime.now().plus(15, ChronoUnit.MINUTES));
+
+            setCookie(response, token.getToken());
+
             this.tokenRepository.save(token);
-            return ResponseEntity.ok(new TokenResponseDto(token.getToken()));
         }else{
             Token token = new Token();
             token.setUser(foundUser.get());
+
+            setCookie(response, token.getToken());
+
             this.tokenRepository.save(token);
-            return ResponseEntity.ok(new TokenResponseDto(token.getToken()));
         }
     }
 
-    public void logoutUser(String token) {
-        String tokenString = token.startsWith("Bearer ")
-                ? token.substring(7)
-                : token;
+    private void setCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie("authToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        response.setHeader("Set-Cookie","authToken=" + token + "; HttpOnly; Path=/; SameSite=None; Secure");
+    }
 
+    public void logoutUser(String token, HttpServletResponse response) {
         //Need to make sure something is actually going to be deleted
-        Optional<Token> foundToken = this.tokenRepository.findByToken(tokenString);
+        Optional<Token> foundToken = this.tokenRepository.findByToken(token);
         if(!foundToken.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Token does not exist");
         }
 
-        this.tokenRepository.deleteToken(tokenString);
+        Cookie cookie = new Cookie("authToken", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        this.tokenRepository.deleteToken(token);
     }
 }

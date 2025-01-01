@@ -23,16 +23,12 @@ public class AuthService {
     }
 
     public User verify(String token) {
-        String tokenString = token.startsWith("Bearer ")
-                ? token.substring(7)
-                : token;
-
-        Optional<Token> foundToken = this.tokenRepository.findByToken(tokenString);
+        Optional<Token> foundToken = this.tokenRepository.findByToken(token);
         if(!foundToken.isPresent() || isExpired(foundToken.get().getExpirationTime())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         }
 
-        return this.userRepository.findUserWithToken(tokenString).get();
+        return this.userRepository.findUserWithToken(token).get();
     }
 
     private boolean isExpired(LocalDateTime expirationDate) {

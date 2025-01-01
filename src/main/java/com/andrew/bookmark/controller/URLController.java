@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Controller for URL endpoints
  */
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 public class URLController {
     private URLService urlService;
@@ -38,12 +38,12 @@ public class URLController {
 
     /**
      * POST endpoint to create a new bookmarked URL
-     * @param token Authentication token from authorization header
+     * @param token Authentication token from cookie
      * @param urlDto Information about the URL to bookmark from request body
      * @return Information about the newly bookmarked URL
      */
     @PostMapping("/url")
-    public URLOutputDto createUrl(@RequestHeader("Authorization") String token, @RequestBody URLDto urlDto) {
+    public URLOutputDto createUrl(@CookieValue("authToken") String token, @RequestBody URLDto urlDto) {
         User user = this.authService.verify(token);
         return this.urlService.create(urlDto, user);
     }
@@ -60,35 +60,35 @@ public class URLController {
 
     /**
      * GET endpoint to get all bookmarked URLs of a user
-     * @param token Authentication token from the authorization header for the logged-in user
+     * @param token Authentication token from cookie
      * @return List containing all bookmarked URLs and information about them
      */
     @GetMapping("/url")
-    public List<URLOutputDto> getUrls(@RequestHeader("Authorization") String token) {
+    public List<URLOutputDto> getUrls(@CookieValue("authToken") String token) {
         User user = this.authService.verify(token);
         return this.urlService.getUrls(user);
     }
 
     /**
      * PUT endpoint to update a bookmarked URLs information (change url, extend expiration, re-activate one-time link, ...)
-     * @param token Authentication token from the authorization header for the logged-in user
+     * @param token Authentication token from cookie
      * @param shortCode Short code mapped to the bookmarked URL
      * @param newDto Information about the bookmarked URL to update
      * @return Information about the updated bookmarked URL
      */
     @PutMapping("/url/{code}")
-    public URLOutputDto updateUrl(@RequestHeader("Authorization") String token, @PathVariable("code") String shortCode, @RequestBody URLDto newDto) {
+    public URLOutputDto updateUrl(@CookieValue("authToken") String token, @PathVariable("code") String shortCode, @RequestBody URLDto newDto) {
         User user = this.authService.verify(token);
         return this.urlService.updateUrl(user, newDto, shortCode);
     }
 
     /**
      * DELETE endpoint to delete a bookmarked URL
-     * @param token Authentication token from the authorization header for the logged-in user
+     * @param token Authentication token from cookie
      * @param shortCode Short code mapped to the bookmarked URL
      */
     @DeleteMapping("/url/{code}")
-    public void deleteUrl(@RequestHeader("Authorization") String token, @PathVariable("code") String shortCode) {
+    public void deleteUrl(@CookieValue("authToken") String token, @PathVariable("code") String shortCode) {
         User user = this.authService.verify(token);
         this.urlService.deleteUrl(user, shortCode);
     }
