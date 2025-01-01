@@ -1,9 +1,11 @@
 import { useState } from "react";
 import makeRequest from "./makeRequest";
+import RegistrationBox from "./RegistrationBox";
 
 const Login = ({setLoggedIn, setToken}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showRegOverlay, setShowRegOverlay] = useState(false);
 
     const submitLogin = async () => {
         const requestBody = {
@@ -28,7 +30,11 @@ const Login = ({setLoggedIn, setToken}) => {
             <label htmlFor="password">Password</label>
             <input type="password" name = "password" onChange={e => setPassword(e.target.value)}></input>
             <br/>
-            <button type="submit" onClick={submitLogin} >Login</button>
+            <button type="submit" onClick={submitLogin}>Login</button>
+            <button onClick={() => setShowRegOverlay(true)}>Register</button>
+            {showRegOverlay && <div id = "overlay">
+                <RegistrationBox setShowRegOverlay={setShowRegOverlay}/>
+            </div>}
         </div>
     );
 }
