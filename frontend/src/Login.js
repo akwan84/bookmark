@@ -2,7 +2,7 @@ import { useState } from "react";
 import makeRequest from "./makeRequest";
 import RegistrationBox from "./RegistrationBox";
 
-const Login = ({setLoggedIn, setToken}) => {
+const Login = ({ setLoggedIn }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showRegOverlay, setShowRegOverlay] = useState(false);
@@ -16,7 +16,6 @@ const Login = ({setLoggedIn, setToken}) => {
         const response = await makeRequest("POST", "/login", requestBody);
         if(response.status === 200) {
             setLoggedIn(true);
-            setToken(response.data["token"]);
         } else {
             alert(response.response.data["message"]);
         }

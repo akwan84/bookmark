@@ -1,7 +1,7 @@
 import { useState } from "react";
 import makeRequest from "./makeRequest";
 
-const CreationBox = ({ setShowOverlay, token, refreshData }) => {
+const CreationBox = ({ setShowOverlay, refreshData }) => {
     const [selectedType, setSelectedType] = useState("1");
     const [url, setUrl] = useState("");
     const [length, setLength] = useState(1);
@@ -15,7 +15,7 @@ const CreationBox = ({ setShowOverlay, token, refreshData }) => {
             "active": active
         };
 
-        const response = await makeRequest("POST", "/url", requestBody, token);
+        const response = await makeRequest("POST", "/url", requestBody);
         if(response.status === 200) {
             refreshData();
             setShowOverlay(false);

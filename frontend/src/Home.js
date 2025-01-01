@@ -3,7 +3,7 @@ import Link from "./Link";
 import CreationBox from "./CreationBox";
 import UpdateBox from "./UpdateBox";
 
-const Home = ({ data, refreshData, type, setType, token }) => {
+const Home = ({ data, refreshData, type, setType }) => {
 
     const [showOverlay, setShowOverlay] = useState(false);
     const [showUpdateOverlay, setShowUpdateOverlay] = useState(false);
@@ -24,7 +24,6 @@ const Home = ({ data, refreshData, type, setType, token }) => {
                 {type === 1 && data.filter(bookmark => bookmark.type === 1).map(bookmark => (
                     <Link 
                         bookmark={bookmark} 
-                        token={token} 
                         refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
@@ -33,7 +32,6 @@ const Home = ({ data, refreshData, type, setType, token }) => {
                 {type === 2 && data.filter(bookmark => bookmark.type === 2).map(bookmark => (
                     <Link 
                         bookmark={bookmark} 
-                        token={token} 
                         refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
@@ -42,7 +40,6 @@ const Home = ({ data, refreshData, type, setType, token }) => {
                 {type === 3 && data.filter(bookmark => bookmark.type === 3).map(bookmark => (
                     <Link 
                         bookmark={bookmark} 
-                        token={token} 
                         refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
@@ -50,10 +47,10 @@ const Home = ({ data, refreshData, type, setType, token }) => {
                 ))}
             </div>
             {showOverlay && <div id = "overlay">
-                <CreationBox setShowOverlay = {setShowOverlay} token={token} refreshData={refreshData}/>
+                <CreationBox setShowOverlay = {setShowOverlay} refreshData={refreshData}/>
             </div>}
             {showUpdateOverlay && <div id = "overlay">
-                <UpdateBox setShowUpdateOverlay = {setShowUpdateOverlay} token={token} refreshData={refreshData} curBookmark={curBookmark}/>
+                <UpdateBox setShowUpdateOverlay = {setShowUpdateOverlay} refreshData={refreshData} curBookmark={curBookmark}/>
             </div>}
         </div>
     );

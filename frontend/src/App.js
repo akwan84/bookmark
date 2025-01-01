@@ -6,21 +6,20 @@ import makeRequest from "./makeRequest";
 
 function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
-	const [token, setToken] = useState("");
 	const [data, setData] = useState([]);
 	const [type, setType] = useState(1);
 
 	useEffect(() => {
 		if(!loggedIn) return;
 		const fetchData = async() => {
-			const response = await makeRequest("GET", "/url", {}, token);
+			const response = await makeRequest("GET", "/url", {});
 			setData(response.data);
 		}
 		fetchData();
 	}, [loggedIn])
 
 	const refreshData = async() => {
-        const response = await makeRequest("GET", "/url", {}, token);
+        const response = await makeRequest("GET", "/url", {});
 		setData(response.data);
     }
 
@@ -32,11 +31,9 @@ function App() {
 					refreshData={refreshData}
 					type = {type}
 					setType={setType}
-					token={token}
 				/> :
 				<Login 
 					setLoggedIn = {setLoggedIn}
-					setToken = {setToken}
 				/>
 			}
 		</div>

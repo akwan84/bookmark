@@ -1,32 +1,38 @@
 import axios from 'axios';
 
-const makeRequest = async (method, url, body, token) => {
+const makeRequest = async (method, url, body) => {
     try {
-        const headers = token != null ? { headers : {Authorization : `Bearer ${token}`}} : {};
-
         let response;
 
         if(method === "POST") {
             response = await axios.post(
                 `${process.env.REACT_APP_API_URL}${url}`,
                 body,
-                headers
+                {
+                    withCredentials: true
+                }
             );
         } else if (method === "GET") {
             response = await axios.get(
                 `${process.env.REACT_APP_API_URL}${url}`,
-                headers
+                {
+                    withCredentials: true
+                }
             );
         } else if (method === "DELETE") {
             response = await axios.delete(
                 `${process.env.REACT_APP_API_URL}${url}`,
-                headers
+                {
+                    withCredentials: true
+                }
             )
         } else if (method === "PUT") {
             response = await axios.put(
                 `${process.env.REACT_APP_API_URL}${url}`,
                 body,
-                headers
+                {
+                    withCredentials: true
+                }
             );
         }
 

@@ -1,6 +1,6 @@
 import makeRequest from "./makeRequest";
 
-const Link = ({ bookmark, token, refreshData, setShowUpdateOverlay, setCurBookmark }) => {
+const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark }) => {
     const copyToClipboard = async(textToCopy) => {
         try {
             await navigator.clipboard.writeText(textToCopy);
@@ -11,7 +11,7 @@ const Link = ({ bookmark, token, refreshData, setShowUpdateOverlay, setCurBookma
     }
 
     const deleteLink = async() => {
-        const response = await makeRequest('DELETE', `/url/${bookmark.shortCode}`, {}, token);
+        const response = await makeRequest('DELETE', `/url/${bookmark.shortCode}`, {});
         if(response.status === 200) {
             refreshData();
         } else {

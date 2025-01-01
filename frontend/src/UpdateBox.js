@@ -1,7 +1,7 @@
 import { useState } from "react";
 import makeRequest from "./makeRequest";
 
-const UpdateBox = ({ setShowUpdateOverlay, token, refreshData, curBookmark }) => {
+const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark }) => {
     const getDiff = () => {
         const curDate = new Date();
         const expDate = new Date(curBookmark.expiration);
@@ -24,7 +24,7 @@ const UpdateBox = ({ setShowUpdateOverlay, token, refreshData, curBookmark }) =>
             "active": active
         };
 
-        const response = await makeRequest("PUT", `/url/${curBookmark.shortCode}`, requestBody, token);
+        const response = await makeRequest("PUT", `/url/${curBookmark.shortCode}`, requestBody);
         if(response.status === 200) {
             refreshData();
             setShowUpdateOverlay(false);
