@@ -27,17 +27,24 @@ const RegistrationBox = ({ setShowRegOverlay }) => {
 
     return (
         <div className = "overlay-box">
-            <label htmlFor="username">Username</label>
-            <input name="username" type="text" onChange={e => setUsername(e.target.value)}></input>
+            <div id="reg-spacer"></div>
+            <label htmlFor="username" className="register-header">Username</label>
             <br/>
-            <label htmlFor="password">Password</label>
-            <input name="password" type="password" onChange={e => setPassword(e.target.value)}></input>
+            <input name="username" type="text" onChange={e => setUsername(e.target.value)} className="reg-input"></input>
             <br/>
-            <label htmlFor="confirm">Confirm Password</label>
-            <input name="confirm" type="password"  onChange={e => setConfirm(e.target.value)}></input>
             <br/>
-            <button onClick={() => setShowRegOverlay(false)}>Cancel</button>
-            <button onClick={registerUser}>Submit</button>
+            <label htmlFor="password" className="register-header">Password</label>
+            <br/>
+            <input name="password" type="password" onChange={e => setPassword(e.target.value)} className="reg-input"></input>
+            <br/>
+            <br/>
+            <label htmlFor="confirm" className="register-header">Confirm Password</label>
+            <br/>
+            <input name="confirm" type="password"  onChange={e => setConfirm(e.target.value)} className="reg-input"></input>
+            <br/>
+            <button onClick={() => setShowRegOverlay(false)} className="reg-button">Cancel</button>
+            <br/>
+            <button onClick={registerUser} className="reg-button">Submit</button>
         </div>
     )
 }

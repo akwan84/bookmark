@@ -1,29 +1,29 @@
-#login-spacer {
+#reg-spacer {
+    height: 5vh;
     width: 100%;
-    height: 20vh;
 }
 
-.login-header {
+.register-header {
     font-size: 2vh;
     font-weight: 600;
     color: #3265fc;
 }
 
-.login-input {
-    width: 30%;
+.reg-input {
+    width: 40%;
     height: 2vh;
     font-size: 1.5vh;
     transition: width 0.25s;
 }
 
-.login-input:focus {
-    width: 32%;
+.reg-input:focus {
+    width: 42%;
 }
 
-.login-button {
+.reg-button {
     font-size: 1.5vh;
     margin-top: 2vh;
-    width: 10%;
+    width: 20%;
     height: 3vh;
     cursor: pointer;
     color: white;
@@ -33,7 +33,7 @@
     transition: width 0.5s, background-color 0.25s;
 }
 
-.login-button:hover {
+.reg-button:hover {
     background-color: #2149c2;
-    width: 11%;
+    width: 22%;
 }
