@@ -10,17 +10,23 @@ function App() {
 	const [type, setType] = useState(1);
 
 	useEffect(() => {
-		if(!loggedIn) return;
 		const fetchData = async() => {
 			const response = await makeRequest("GET", "/url", {});
-			setData(response.data);
+			if(response.status === 200) {
+				setData(response.data);
+				setLoggedIn(true);
+			}
 		}
 		fetchData();
-	}, [loggedIn])
+	}, []);
 
 	const refreshData = async() => {
         const response = await makeRequest("GET", "/url", {});
-		setData(response.data);
+		if(response.status === 200) {
+			setData(response.data);
+		} else {
+			alert(response.response.data["message"]);
+		}
     }
 
 	return (
@@ -35,6 +41,7 @@ function App() {
 				/> :
 				<Login 
 					setLoggedIn = {setLoggedIn}
+					refreshData = {refreshData}
 				/>
 			}
 		</div>

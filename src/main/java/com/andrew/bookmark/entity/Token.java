@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 @Entity
 public class Token {
-    private static int LENGTH = 30;
+    private static int LENGTH = 15;
 
     @Id
     @GeneratedValue
