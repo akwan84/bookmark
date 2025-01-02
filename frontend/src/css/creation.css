@@ -1,0 +1,92 @@
+.create-header {
+    font-size: 2vh;
+    font-weight: 600;
+    color: #3265fc;
+}
+
+.creation-btn {
+    position: absolute;
+    font-size: 1.5vh;
+    width: 20%;
+    height: 3vh;
+    cursor: pointer;
+    color: white;
+    background-color: #3265fc;
+    border: 0px;
+    border-radius: 10px;
+    transition: width 0.25s, background-color 0.25s, left 0.25s, right 0.25s;
+}
+
+#cancel-button {
+    bottom : 4vh;
+    left : 28%;
+}
+
+#cancel-button:hover {
+    background-color: #2149c2;
+    width: 22%;
+    left: 27%;
+}
+
+#sub-button {
+    bottom : 4vh;
+    right : 28%;
+}
+
+#sub-button:hover {
+    background-color: #2149c2;
+    width: 22%;
+    right: 27%;
+}
+
+.create-input {
+    box-sizing: border-box;
+    width: 40%;
+    height: 2.5vh;
+    font-size: 1.5vh;
+    padding: 0%;
+    transition: width 0.25s;
+}
+
+.create-input:focus {
+    width: 42%;
+}
+
+.create-active {
+    font-size: 1.5vh;
+    width: 20%;
+    height: 3vh;
+    cursor: pointer;
+    color: white;
+    background-color: #3265fc;
+    border: 0px;
+    border-radius: 10px;
+    transition: width 0.25s, background-color 0.25s;
+}
+
+.create-active:hover {
+    width: 22%;
+    background-color: #2149c2;
+}
+
+.create-inactive {
+    font-size: 1.5vh;
+    width: 20%;
+    height: 3vh;
+    cursor: pointer;
+    color: white;
+    background-color: #fc4747;
+    border: 0px;
+    border-radius: 10px;
+    transition: width 0.25s, background-color 0.25s;
+}
+
+.create-inactive:hover {
+    width: 22%;
+    background-color: #bd3333;
+}
+
+#create-spacer {
+    width: 100%;
+    height: 5vh;
+}
