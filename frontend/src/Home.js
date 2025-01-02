@@ -20,17 +20,17 @@ const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
     }
 
     return (
-        <div style={{position:"relative"}}>
+        <div style={{position:"relative"}} className="outer">
             <div>
-                <div>
-                    <button onClick={refreshData}>Refresh</button>
-                    <button onClick={() => setShowOverlay(true)}>Create</button>
-                    <button onClick={logout}>Logout</button>
+                <div className="header">
+                    <h1 id="title">BKMRK</h1>
+                    <button onClick={logout} className="header-button">Logout</button>
+                    <button onClick={() => setShowOverlay(true)} className="header-button">Create</button>
                 </div>
-                <div>
-                    <button onClick = {() => setType(1)}>Permanent</button>
-                    <button onClick = {() => setType(2)}>Temporary</button>
-                    <button onClick = {() => setType(3)}>One-Time</button>
+                <div id="type-select">
+                    <button onClick = {() => setType(1)} className={type === 1 ? "select-opt selected" : "select-opt unselected"}>Permanent</button>
+                    <button onClick = {() => setType(2)} className={type === 2 ? "select-opt selected" : "select-opt unselected"}>Temporary</button>
+                    <button onClick = {() => setType(3)} className={type === 3 ? "select-opt selected" : "select-opt unselected"}>One-Time</button>
                 </div>
                 {type === 1 && data.filter(bookmark => bookmark.type === 1).map(bookmark => (
                     <Link 
