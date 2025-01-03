@@ -1,0 +1,38 @@
+.link-box {
+    border: 1px solid;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 2vh;
+    text-align: left;
+    border-radius: 15px;
+    background-color: rgba(50, 101, 252, 0.5);
+    border: 3px solid #3265fc;
+}
+
+.link-box p {
+    margin-left: 5%;
+    color: white;
+    font-size: 1.5vh;
+    font-weight: 600;
+}
+
+.link-box a {
+    color: #3265fc;
+}
+
+.link-box button {
+    margin-left: 5%;
+    font-size: 1.5vh;
+    width: 20%;
+    height: 3vh;
+    cursor: pointer;
+    color: white;
+    background-color: #3265fc;
+    border: 0px;
+    border-radius: 10px;
+    transition: background-color 0.25s;
+}
+
+.link-box button:hover {
+    background-color: #2149c2;
+}

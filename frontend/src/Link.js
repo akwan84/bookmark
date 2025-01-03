@@ -26,7 +26,7 @@ const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark }) =
 
     const shortUrl = `${process.env.REACT_APP_API_URL}/url/${bookmark.shortCode}`;
     return (
-        <div style={{border: "1px solid"}}>
+        <div className="link-box">
             <p>Short URL: <a href={shortUrl} target="_blank">{shortUrl}</a></p>
             <button onClick={() => copyToClipboard(shortUrl)}>Copy Short URL</button>
             <p>Full URL: <a href={bookmark.fullUrl} target="_blank">{bookmark.fullUrl}</a></p>
@@ -34,7 +34,7 @@ const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark }) =
             {bookmark.type !== 3 && <p>Number of Visits: {bookmark.numVisits}</p>}
             {bookmark.type === 2 && <p>Expiration Date: {bookmark.expiration}</p>}
             {bookmark.type === 3 && <p>Active: {bookmark.isActive ? 'True' : 'False'}</p>}
-            <button onClick={deleteLink}>Delete</button>
+            <button onClick={deleteLink} style={{marginBottom:"1em"}}>Delete</button>
             <button onClick={triggerUpdate}>Update</button>
         </div>
     );
