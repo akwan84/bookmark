@@ -35,19 +35,23 @@ const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark }) => {
 
     return (
         <div className = "overlay-box">
-            <label htmlFor="fullUrl">URL</label>
-            <input name="fullUrl" onChange = {e => setUrl(e.target.value)} value={url}></input>
-
+            <div id="update-spacer"></div>
+            <label htmlFor="fullUrl" className="update-header">URL</label>
+            <br/>
+            <input name="fullUrl" onChange = {e => setUrl(e.target.value)} value={url} className="update-input"></input>
+            <br/>
             {curBookmark.type === 2 && 
                 <div>
-                    <label htmlFor="expTime">Time Until Expiration</label>
-                    <input name="expTime" onChange={e => setExpTime(e.target.value)} value={expTime} type="number" min="1"></input>
+                    <label htmlFor="expTime" className="update-header">Time Until Expiration</label>
+                    <br/>
+                    <input name="expTime" onChange={e => setExpTime(e.target.value)} value={expTime} type="number" min="1" className="update-input"></input>
                 </div>
             }
-            {curBookmark.type === 3 && <button onClick={() => setActive(!active)}>{active ? "Active" : "Inactive"}</button>}
+            {curBookmark.type === 3 && <button onClick={() => setActive(!active)} className={active ? "create-active" : "create-inactive"}>{active ? "Active" : "Inactive"}</button>}
             
-            <button onClick={() => setShowUpdateOverlay(false)}>Cancel</button>
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={() => setShowUpdateOverlay(false)} id="update-cancel-button" className="update-btn">Cancel</button>
+            <br/>
+            <button onClick={handleSubmit} id="update-sub-button" className="update-btn">Submit</button>
         </div>
     );
 }

@@ -31,7 +31,6 @@ const CreationBox = ({ setShowOverlay, refreshData }) => {
             <br/>
             <input name="fullUrl" onChange = {e => setUrl(e.target.value)} className="create-input"></input>
             <br/>
-            <br/>
             <label className="create-header">Type</label>
             <br/>
             <select onChange={e => setSelectedType(e.target.value)} className="create-input">
@@ -40,13 +39,11 @@ const CreationBox = ({ setShowOverlay, refreshData }) => {
                 <option value="3">One-Time</option>
             </select>
             <br/>
-            <br/>
             {selectedType === "2" && 
                 <div>
                     <label htmlFor="validLength" className="create-header">Validity Length (in minutes)</label>
                     <br/>
                     <input name="validLength" type="number" min="1" onChange={e => setLength(e.target.value)} className="create-input"></input>
-                    <br/>
                     <br/>
                 </div>
             }
