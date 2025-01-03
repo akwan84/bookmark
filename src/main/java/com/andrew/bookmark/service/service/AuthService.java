@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Service
@@ -32,8 +34,8 @@ public class AuthService {
     }
 
     private boolean isExpired(LocalDateTime expirationDate) {
-        LocalDateTime now = LocalDateTime.now();
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
 
-        return now.isAfter(expirationDate);
+        return now.toLocalDateTime().isAfter(expirationDate);
     }
 }

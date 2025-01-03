@@ -3,7 +3,8 @@ package com.andrew.bookmark.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 /**
@@ -11,7 +12,7 @@ import java.util.UUID;
  */
 @Entity
 public class Token {
-    private static int LENGTH = 15;
+    private static final int LENGTH = 15;
 
     @Id
     @GeneratedValue
@@ -33,7 +34,9 @@ public class Token {
      */
     public Token(){
         this.token = UUID.randomUUID().toString();
-        this.expirationTime = LocalDateTime.now().plus(Token.LENGTH, ChronoUnit.MINUTES);
+
+        ZonedDateTime utcExpTime = ZonedDateTime.now(ZoneId.of("UTC")).plusMinutes(Token.LENGTH);
+        this.expirationTime = utcExpTime.toLocalDateTime();
     }
 
     /**

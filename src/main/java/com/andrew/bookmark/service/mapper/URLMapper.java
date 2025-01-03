@@ -6,8 +6,8 @@ import com.andrew.bookmark.entity.URL;
 import com.andrew.bookmark.entity.User;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Random;
 
 @Service
@@ -37,7 +37,8 @@ public class URLMapper {
         url.setFullUrl(dto.fullUrl());
         url.setType(dto.type());
         if(dto.type() == 2) {
-            url.setExpirationTime(LocalDateTime.now().plus(dto.length(), ChronoUnit.MINUTES));
+            ZonedDateTime utcExpTime = ZonedDateTime.now(ZoneId.of("UTC")).plusMinutes(dto.length());
+            url.setExpirationTime(utcExpTime.toLocalDateTime());
         } else if (dto.type() == 3) {
             url.setActive(true);
         }

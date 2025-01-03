@@ -13,6 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,8 +119,8 @@ public class URLService {
     }
 
     private boolean isExpired(LocalDateTime dateTime) {
-        LocalDateTime now = LocalDateTime.now();
+        ZonedDateTime utcNow = ZonedDateTime.now(ZoneId.of("UTC"));
 
-        return now.isAfter(dateTime);
+        return utcNow.toLocalDateTime().isAfter(dateTime);
     }
 }

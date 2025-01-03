@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * Entity to represent a bookmarked URL
@@ -55,7 +56,8 @@ public class URL {
         this.type = type;
 
         if(type == 2) { //set expiration time for temporary links
-            this.expirationTime = LocalDateTime.now().plus(length, ChronoUnit.MINUTES);
+            ZonedDateTime utcExpTime = ZonedDateTime.now(ZoneId.of("UTC")).plusMinutes(length);
+            this.expirationTime = utcExpTime.toLocalDateTime();
         } else if(type == 3) { //set link as active for one-time links
             this.active = active;
         }

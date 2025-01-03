@@ -16,13 +16,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserService {
+    private static final int LENGTH = 15;
+
     private final UserRepository userRepository;
 
     private final TokenRepository tokenRepository;
@@ -62,7 +64,7 @@ public class UserService {
         if(foundToken.isPresent()) {
             Token token = foundToken.get();
             token.setToken(UUID.randomUUID().toString());
-            token.setExpirationTime(LocalDateTime.now().plus(15, ChronoUnit.MINUTES));
+            token.setExpirationTime(ZonedDateTime.now(ZoneId.of("UTC")).plusMinutes(UserService.LENGTH).toLocalDateTime());
 
             setCookie(response, token.getToken());
 
