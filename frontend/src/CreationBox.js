@@ -1,7 +1,7 @@
 import { useState } from "react";
 import makeRequest from "./makeRequest";
 
-const CreationBox = ({ setShowOverlay, refreshData }) => {
+const CreationBox = ({ setShowOverlay, refreshData, setLoggedIn }) => {
     const [selectedType, setSelectedType] = useState("1");
     const [url, setUrl] = useState("");
     const [length, setLength] = useState(1);
@@ -19,6 +19,9 @@ const CreationBox = ({ setShowOverlay, refreshData }) => {
         if(response.status === 200) {
             refreshData();
             setShowOverlay(false);
+        } else if (response.status === 401) {
+            alert("Session Expired");
+            setLoggedIn(false);
         } else {
             alert(response.response.data["message"]);
         }

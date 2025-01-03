@@ -38,6 +38,7 @@ const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
                         refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
+                        setLoggedIn = {setLoggedIn}
                     />
                 ))}
                 {type === 2 && data.filter(bookmark => bookmark.type === 2).map(bookmark => (
@@ -46,6 +47,7 @@ const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
                         refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
+                        setLoggedIn = {setLoggedIn}
                     />
                 ))}
                 {type === 3 && data.filter(bookmark => bookmark.type === 3).map(bookmark => (
@@ -54,14 +56,15 @@ const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
                         refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
+                        setLoggedIn = {setLoggedIn}
                     />
                 ))}
             </div>
             {showOverlay && <div id = "overlay">
-                <CreationBox setShowOverlay = {setShowOverlay} refreshData={refreshData}/>
+                <CreationBox setShowOverlay = {setShowOverlay} refreshData={refreshData} setLoggedIn = {setLoggedIn}/>
             </div>}
             {showUpdateOverlay && <div id = "overlay">
-                <UpdateBox setShowUpdateOverlay = {setShowUpdateOverlay} refreshData={refreshData} curBookmark={curBookmark}/>
+                <UpdateBox setShowUpdateOverlay = {setShowUpdateOverlay} refreshData={refreshData} curBookmark={curBookmark} setLoggedIn = {setLoggedIn}/>
             </div>}
         </div>
     );

@@ -1,6 +1,6 @@
 import makeRequest from "./makeRequest";
 
-const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark }) => {
+const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark, setLoggedIn }) => {
     const copyToClipboard = async(textToCopy) => {
         try {
             await navigator.clipboard.writeText(textToCopy);
@@ -14,6 +14,9 @@ const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark }) =
         const response = await makeRequest('DELETE', `/url/${bookmark.shortCode}`, {});
         if(response.status === 200) {
             refreshData();
+        } else if (response.status === 401) {
+            alert("Session Expired");
+            setLoggedIn(false);
         } else {
             alert(response.response.data["message"]);
         }

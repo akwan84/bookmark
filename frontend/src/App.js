@@ -24,6 +24,9 @@ function App() {
         const response = await makeRequest("GET", "/url", {});
 		if(response.status === 200) {
 			setData(response.data);
+		} else if (response.status === 401) {
+			alert("Session Expired");
+			setLoggedIn(false);
 		} else {
 			alert(response.response.data["message"]);
 		}

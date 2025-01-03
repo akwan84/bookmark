@@ -1,7 +1,7 @@
 import { useState } from "react";
 import makeRequest from "./makeRequest";
 
-const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark }) => {
+const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark, setLoggedIn }) => {
     const getDiff = () => {
         const curDate = new Date();
         const expDate = new Date(curBookmark.expiration);
@@ -28,6 +28,9 @@ const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark }) => {
         if(response.status === 200) {
             refreshData();
             setShowUpdateOverlay(false);
+        } else if (response.status === 401) {
+            alert("Session Expired");
+            setLoggedIn(false);
         } else {
             alert(response.response.data["message"]);
         }
