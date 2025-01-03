@@ -60,10 +60,10 @@ const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
                     />
                 ))}
             </div>
-            {showOverlay && <div id = "overlay">
+            {showOverlay && <div className = "overlay">
                 <CreationBox setShowOverlay = {setShowOverlay} refreshData={refreshData} setLoggedIn = {setLoggedIn}/>
             </div>}
-            {showUpdateOverlay && <div id = "overlay">
+            {showUpdateOverlay && <div className = "overlay">
                 <UpdateBox setShowUpdateOverlay = {setShowUpdateOverlay} refreshData={refreshData} curBookmark={curBookmark} setLoggedIn = {setLoggedIn}/>
             </div>}
         </div>

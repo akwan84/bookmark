@@ -1,0 +1,50 @@
+#delete-confirm-message {
+    font-size: 2vh;
+    font-weight: 600;
+    color: #3265fc;
+    margin-left: 0;
+}
+
+#delete-confirm-box {
+    text-align: center;
+}
+
+.delete-confirm-btn {
+    position: absolute;
+    font-size: 1.5vh;
+    width: 20%;
+    height: 3vh;
+    cursor: pointer;
+    color: white;
+    background-color: #3265fc;
+    border: 0px;
+    border-radius: 10px;
+    transition: width 0.25s, background-color 0.25s, left 0.25s, right 0.25s;
+}
+
+#delete-cancel-button {
+    bottom : 15vh;
+    left : 28%;
+}
+
+#delete-cancel-button:hover {
+    background-color: #2149c2;
+    width: 22%;
+    left: 27%;
+}
+
+#delete-sub-button {
+    bottom : 15vh;
+    right : 28%;
+}
+
+#delete-sub-button:hover {
+    background-color: #2149c2;
+    width: 22%;
+    right: 27%;
+}
+
+#delete-spacer {
+    width: 100%;
+    height: 10vh;
+}

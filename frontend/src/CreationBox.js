@@ -21,6 +21,7 @@ const CreationBox = ({ setShowOverlay, refreshData, setLoggedIn }) => {
             setShowOverlay(false);
         } else if (response.status === 401) {
             alert("Session Expired");
+            setShowOverlay(false);
             setLoggedIn(false);
         } else {
             alert(response.response.data["message"]);

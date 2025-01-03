@@ -7,6 +7,7 @@ import './css/home.css';
 import './css/creation.css';
 import './css/link.css';
 import './css/update.css';
+import './css/delete.css';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

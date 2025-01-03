@@ -30,6 +30,7 @@ const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark, setLoggedIn
             setShowUpdateOverlay(false);
         } else if (response.status === 401) {
             alert("Session Expired");
+            setShowUpdateOverlay(false);
             setLoggedIn(false);
         } else {
             alert(response.response.data["message"]);

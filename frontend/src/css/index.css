@@ -21,7 +21,7 @@ code {
   overflow-y: scroll;
 }
 
-#overlay {
+.overlay {
   position: fixed;
   bottom : 0;
   right : 0;

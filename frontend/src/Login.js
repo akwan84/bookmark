@@ -37,7 +37,7 @@ const Login = ({ setLoggedIn, refreshData }) => {
             <button type="submit" onClick={submitLogin} className="login-button">Login</button>
             <br/>
             <button onClick={() => setShowRegOverlay(true)} className="login-button">Register</button>
-            {showRegOverlay && <div id = "overlay">
+            {showRegOverlay && <div className = "overlay">
                 <RegistrationBox setShowRegOverlay={setShowRegOverlay}/>
             </div>}
         </div>
