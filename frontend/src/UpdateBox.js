@@ -4,7 +4,8 @@ import makeRequest from "./makeRequest";
 const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark, setLoggedIn }) => {
     const getDiff = () => {
         const curDate = new Date();
-        const expDate = new Date(curBookmark.expiration);
+        const utcExpDate = new Date(curBookmark.expiration);
+        const expDate = new Date(utcExpDate.getTime() - utcExpDate.getTimezoneOffset()*60*1000); 
 
         const diff = expDate - curDate;
         if(diff < 0) return 0;

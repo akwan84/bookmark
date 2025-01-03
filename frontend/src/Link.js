@@ -18,7 +18,11 @@ const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark, set
         setShowUpdateOverlay(true);
     }
 
-    const date = new Date(bookmark.expiration);
+    const convertUTCDateToLocalDate = (date) => {
+        return new Date(date.getTime() - date.getTimezoneOffset()*60*1000);   
+    }
+
+    const date = convertUTCDateToLocalDate(new Date(bookmark.expiration));
     const now = new Date();
     const boxColor = 
         (bookmark.type === 3 && !bookmark.isActive) || (bookmark.type === 2 && date - now < 0)
@@ -36,7 +40,7 @@ const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark, set
             <p>Full URL: <a href={bookmark.fullUrl} target="_blank">{bookmark.fullUrl}</a></p>
             <button onClick={() => copyToClipboard(bookmark.fullUrl)} className={buttonColor}>Copy Full URL</button>
             {bookmark.type !== 3 && <p>Number of Visits: {bookmark.numVisits}</p>}
-            {bookmark.type === 2 && <p>Expiration Date: {bookmark.expiration}</p>}
+            {bookmark.type === 2 && <p>Expiration Date: {date.toLocaleString()}</p>}
             {bookmark.type === 3 && <p>{bookmark.isActive ? 'Active' : 'Inactive'}</p>}
             <button onClick={() => setShowDeleteConfirm(true)} style={{marginBottom:"1em"}} className={buttonColor}>Delete</button>
             <button onClick={triggerUpdate} className={buttonColor}>Update</button>
