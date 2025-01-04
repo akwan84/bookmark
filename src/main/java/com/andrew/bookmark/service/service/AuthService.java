@@ -13,17 +13,30 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
+/**
+ * Authentication service
+ */
 @Service
 public class AuthService {
     private final UserRepository userRepository;
 
     private final TokenRepository tokenRepository;
 
+    /**
+     * Constructor
+     * @param userRepository Repository for persisting User entities
+     * @param tokenRepository Repository for persisting Token entities
+     */
     public AuthService(UserRepository userRepository, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
     }
 
+    /**
+     * Verifying authentication token
+     * @param token Token to verify
+     * @return User associated with the token if valid
+     */
     public User verify(String token) {
         Optional<Token> foundToken = this.tokenRepository.findByToken(token);
         if(!foundToken.isPresent() || isExpired(foundToken.get().getExpirationTime())) {
@@ -33,6 +46,11 @@ public class AuthService {
         return this.userRepository.findUserWithToken(token).get();
     }
 
+    /**
+     * Check if a token expiration date is expired
+     * @param expirationDate expiration date
+     * @return true if expired, false otherwise
+     */
     private boolean isExpired(LocalDateTime expirationDate) {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("UTC"));
 

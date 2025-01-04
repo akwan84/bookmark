@@ -15,23 +15,36 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * URL Service
+ */
 @Service
 public class URLService {
     private final URLRepository urlRepository;
 
     private final URLMapper urlMapper;
 
+    /**
+     * Constructor
+     * @param urlRepository Repository for persisting URL entities
+     * @param urlMapper Mapper for URL entities
+     */
     @Autowired
     public URLService(URLRepository urlRepository, URLMapper urlMapper) {
         this.urlRepository = urlRepository;
         this.urlMapper = urlMapper;
     }
 
+    /**
+     * Create a new URL entity
+     * @param dto URL input DTO from the request body
+     * @param user User creating the entity
+     * @return DTO with information about the newly created entity
+     */
     public URLOutputDto create(URLDto dto, User user) {
         if(dto.type() == 2 && dto.length() < 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Temporary links must have a lifetime of 1 minute or more");
@@ -48,6 +61,11 @@ public class URLService {
         return urlMapper.toOutputDto(url);
     }
 
+    /**
+     * Redirect a short URL
+     * @param shortCode 6 character code at the end of the URL
+     * @return Page to redirect to
+     */
     public RedirectView redirect(String shortCode) {
         Optional<URL> url = this.urlRepository.findByShortCode(shortCode);
         if(!url.isPresent()) {
@@ -75,12 +93,24 @@ public class URLService {
         return redirectView;
     }
 
+    /**
+     * Get URLs created by a user
+     * @param user User to search for
+     * @return URLs created by a user
+     */
     public List<URLOutputDto> getUrls(User user) {
         List<URL> urls = this.urlRepository.findAllByUser(user);
 
         return urls.stream().map(this.urlMapper::toOutputDto).collect(Collectors.toList());
     }
 
+    /**
+     * Update existing URL entity
+     * @param user User's URL to update
+     * @param newDto DTO with update information from the request body
+     * @param shortCode 6 character code at the end of the URL to update
+     * @return DTO containing the updated URLs information
+     */
     public URLOutputDto updateUrl(User user, URLDto newDto, String shortCode) {
         Optional<URL> foundUrl = this.urlRepository.findByShortCode(shortCode);
         if(!foundUrl.isPresent()) {
@@ -103,6 +133,11 @@ public class URLService {
         return this.urlMapper.toOutputDto(updated);
     }
 
+    /**
+     * Delete an existing URL
+     * @param user User who created the URL
+     * @param shortCode 6 character code at the end of the URL to delete
+     */
     public void deleteUrl(User user, String shortCode) {
         Optional<URL> foundUrl = this.urlRepository.findByShortCode(shortCode);
         if(!foundUrl.isPresent()) {
@@ -118,6 +153,11 @@ public class URLService {
         this.urlRepository.deleteUrl(shortCode);
     }
 
+    /**
+     * Check if a temporary URL is expired
+     * @param dateTime Expiration date
+     * @return true if date is expired, false otherwise
+     */
     private boolean isExpired(LocalDateTime dateTime) {
         ZonedDateTime utcNow = ZonedDateTime.now(ZoneId.of("UTC"));
 

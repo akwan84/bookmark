@@ -5,6 +5,9 @@ import com.andrew.bookmark.entity.User;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+/**
+ * Mapper from User entity
+ */
 @Service
 public class UserMapper {
     /**

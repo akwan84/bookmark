@@ -10,6 +10,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Random;
 
+/**
+ * Mapper to and from URL entities
+ */
 @Service
 public class URLMapper {
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyz1234567890";
