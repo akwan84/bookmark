@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/bookmarks
-    username: user
-    password: 1234
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5434}/bookmarks
+    username: ${POSTGRES_USER:user}
+    password: ${POSTGRES_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate: #implementation of JPA (not Spring JPA)

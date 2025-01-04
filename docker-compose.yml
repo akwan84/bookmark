@@ -1,12 +1,26 @@
 version: "3.8"  # Specify the Docker Compose version
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_HOST: postgres_container
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_PORT: 5432
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:latest  # Use the latest PostgreSQL image
     container_name: postgres_container  # Optional: name the container
     restart: always  # Ensure the container restarts on failure
     ports:
-      - "5434:5432"  # Map the container's port 5432 to the host's port 5432
+      - "5434:5432"  # Map the container's port 5434 to the host's port 5432 (for some reason, 5432 doesn't work)
     environment:
       POSTGRES_USER: user  # Set the username for the database
       POSTGRES_PASSWORD: 1234  # Set the password for the database
