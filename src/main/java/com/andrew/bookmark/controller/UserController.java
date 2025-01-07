@@ -2,13 +2,18 @@ package com.andrew.bookmark.controller;
 
 import com.andrew.bookmark.dto.TokenResponseDto;
 import com.andrew.bookmark.dto.UserDto;
+import com.andrew.bookmark.exception.url.InvalidInputException;
+import com.andrew.bookmark.exception.user.DuplicateUserException;
+import com.andrew.bookmark.exception.user.NonExistentTokenException;
+import com.andrew.bookmark.exception.user.UnauthorizedUserException;
+import com.andrew.bookmark.exception.user.UserNotFoundException;
 import com.andrew.bookmark.service.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +48,6 @@ public class UserController {
      * POST endpoint to log in a user
      * @param dto Username and password of the user to login
      * @param response Response object
-     * @return Authentication token upon successful login
      */
     @PostMapping("/login")
     public void loginUser(@Valid @RequestBody UserDto dto, HttpServletResponse response) {
@@ -61,17 +65,58 @@ public class UserController {
     }
 
     /**
-     * Exception handler for ResponseStatusException
-     * @param e Exception caught
+     * Exception handler for UnauthorizedUserException
+     * @param exception Exception caught
+     * @return Formatted response containing error message and status code
+     */
+    @ExceptionHandler(UnauthorizedUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<?> handleUnauthorizedUserException(UnauthorizedUserException exception) {
+        Map<String, String> message = new HashMap<>();
+        message.put("status", "401");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Exception handler for NonExistentTokenException and UserNotFoundException
+     * @param exception Exception caught
+     * @return Formatted response containing error message and status code
+     */
+    @ExceptionHandler({NonExistentTokenException.class, UserNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<?> handleNotFoundException(RuntimeException exception) {
+        Map<String, String> message = new HashMap<>();
+        message.put("status", "404");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Exception handler for DuplicateUserException
+     * @param exception Exception caught
+     * @return Formatted response containing error message and status code
+     */
+    @ExceptionHandler(DuplicateUserException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<?> handleDuplicateUserException(InvalidInputException exception) {
+        Map<String, String> message = new HashMap<>();
+        message.put("status", "409");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Exception handler for exceptions not explicitly thrown
+     * @param exception Exception caught
      * @return Formatted response containing error message and HTTP status code
      */
-    @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<?> handleResponseStatusException(
-            ResponseStatusException e
-    ) {
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException exception) {
         Map<String, String> message = new HashMap<>();
-        message.put("status", e.getStatusCode() + "");
-        message.put("message", e.getReason());
-        return new ResponseEntity<>(message, e.getStatusCode());
+        message.put("status", "500");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

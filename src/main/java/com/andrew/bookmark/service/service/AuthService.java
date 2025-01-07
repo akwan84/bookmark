@@ -2,11 +2,10 @@ package com.andrew.bookmark.service.service;
 
 import com.andrew.bookmark.entity.Token;
 import com.andrew.bookmark.entity.User;
+import com.andrew.bookmark.exception.user.UnauthorizedUserException;
 import com.andrew.bookmark.repository.TokenRepository;
 import com.andrew.bookmark.repository.UserRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -40,7 +39,7 @@ public class AuthService {
     public User verify(String token) {
         Optional<Token> foundToken = this.tokenRepository.findByToken(token);
         if(!foundToken.isPresent() || isExpired(foundToken.get().getExpirationTime())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+            throw new UnauthorizedUserException("Unauthorized");
         }
 
         return this.userRepository.findUserWithToken(token).get();

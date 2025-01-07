@@ -3,6 +3,10 @@ package com.andrew.bookmark.service.service;
 import com.andrew.bookmark.dto.UserDto;
 import com.andrew.bookmark.entity.Token;
 import com.andrew.bookmark.entity.User;
+import com.andrew.bookmark.exception.user.DuplicateUserException;
+import com.andrew.bookmark.exception.user.NonExistentTokenException;
+import com.andrew.bookmark.exception.user.UnauthorizedUserException;
+import com.andrew.bookmark.exception.user.UserNotFoundException;
 import com.andrew.bookmark.repository.TokenRepository;
 import com.andrew.bookmark.repository.UserRepository;
 import com.andrew.bookmark.service.mapper.UserMapper;
@@ -10,9 +14,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -52,7 +54,7 @@ public class UserService {
     public void registerUser(UserDto dto){
         Optional<User> foundUser = this.userRepository.findByUsername(dto.username());
         if(foundUser.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username taken");
+            throw new DuplicateUserException("Username taken");
         }
 
         User user = this.mapper.toUser(dto);
@@ -67,13 +69,13 @@ public class UserService {
     public void loginUser(UserDto dto, HttpServletResponse response) {
         Optional<User> foundUser = this.userRepository.findByUsername(dto.username());
         if(!foundUser.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         boolean match = BCrypt.checkpw(dto.password(), foundUser.get().getPassword());
 
         if(!match) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password is incorrect");
+            throw new UnauthorizedUserException("Password is incorrect");
         }
 
         Optional<Token> foundToken = this.tokenRepository.findUserWithTokenById(foundUser.get().getId());
@@ -118,7 +120,7 @@ public class UserService {
         //Need to make sure something is actually going to be deleted
         Optional<Token> foundToken = this.tokenRepository.findByToken(token);
         if(!foundToken.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Token does not exist");
+            throw new NonExistentTokenException("Token does not exist");
         }
 
         Cookie cookie = new Cookie("authToken", null);
