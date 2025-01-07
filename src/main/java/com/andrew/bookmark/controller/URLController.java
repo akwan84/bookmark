@@ -3,9 +3,14 @@ package com.andrew.bookmark.controller;
 import com.andrew.bookmark.dto.URLDto;
 import com.andrew.bookmark.dto.URLOutputDto;
 import com.andrew.bookmark.entity.User;
+import com.andrew.bookmark.exception.url.ForbiddenUpdateException;
+import com.andrew.bookmark.exception.url.InvalidInputException;
+import com.andrew.bookmark.exception.url.InvalidLinkException;
+import com.andrew.bookmark.exception.url.UrlNotFoundException;
 import com.andrew.bookmark.service.service.AuthService;
 import com.andrew.bookmark.service.service.URLService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -94,17 +99,58 @@ public class URLController {
     }
 
     /**
-     * Exception handler for ResponseStatusException
-     * @param e Exception caught
+     * Exception handler for InvalidInputException
+     * @param exception Exception caught
+     * @return Formatted response containing error message and status code
+     */
+    @ExceptionHandler(InvalidInputException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> handleInvalidInputException(InvalidInputException exception) {
+        Map<String, String> message = new HashMap<>();
+        message.put("status", "400");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Exception handler for ForbiddenUpdateException and InvalidLinkException
+     * @param exception Exception caught
+     * @return Formatted response containing error message and status code
+     */
+    @ExceptionHandler({ ForbiddenUpdateException.class, InvalidLinkException.class })
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<?> handleForbiddenException(RuntimeException exception) {
+        Map<String, String> message = new HashMap<>();
+        message.put("status", "403");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * Exception handler for UrlNotFoundException
+     * @param exception Exception caught
+     * @return Formatted response containing error message and status code
+     */
+    @ExceptionHandler(UrlNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<?> handleUrlNotFoundException(UrlNotFoundException exception) {
+        Map<String, String> message = new HashMap<>();
+        message.put("status", "404");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Exception handler for exceptions not explicitly thrown
+     * @param exception Exception caught
      * @return Formatted response containing error message and HTTP status code
      */
-    @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<?> handleResponseStatusException(
-            ResponseStatusException e
-    ) {
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException exception) {
         Map<String, String> message = new HashMap<>();
-        message.put("status", e.getStatusCode() + "");
-        message.put("message", e.getReason());
-        return new ResponseEntity<>(message, e.getStatusCode());
+        message.put("status", "500");
+        message.put("message", exception.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

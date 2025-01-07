@@ -4,12 +4,14 @@ import com.andrew.bookmark.dto.URLDto;
 import com.andrew.bookmark.dto.URLOutputDto;
 import com.andrew.bookmark.entity.URL;
 import com.andrew.bookmark.entity.User;
+import com.andrew.bookmark.exception.url.ForbiddenUpdateException;
+import com.andrew.bookmark.exception.url.InvalidInputException;
+import com.andrew.bookmark.exception.url.InvalidLinkException;
+import com.andrew.bookmark.exception.url.UrlNotFoundException;
 import com.andrew.bookmark.repository.URLRepository;
 import com.andrew.bookmark.service.mapper.URLMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDateTime;
@@ -47,7 +49,7 @@ public class URLService {
      */
     public URLOutputDto create(URLDto dto, User user) {
         if(dto.type() == 2 && dto.length() < 1) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Temporary links must have a lifetime of 1 minute or more");
+            throw new InvalidInputException("Temporary links must have a lifetime of 1 minute or more");
         }
 
         URL url = this.urlMapper.toURL(dto, user);
@@ -69,18 +71,18 @@ public class URLService {
     public RedirectView redirect(String shortCode) {
         Optional<URL> url = this.urlRepository.findByShortCode(shortCode);
         if(!url.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL does not exist");
+            throw new UrlNotFoundException("URL does not exist");
         }
 
         URL foundUrl = url.get();
         RedirectView redirectView = new RedirectView();
 
         if(foundUrl.getType() == 2 && isExpired(foundUrl.getExpirationTime())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This link has expired");
+            throw new InvalidLinkException("This link has expired");
         }
 
         if(foundUrl.getType() == 3 && !foundUrl.isActive()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid link");
+            throw new InvalidLinkException("Invalid link");
         }
 
         redirectView.setUrl(foundUrl.getFullUrl());
@@ -114,17 +116,17 @@ public class URLService {
     public URLOutputDto updateUrl(User user, URLDto newDto, String shortCode) {
         Optional<URL> foundUrl = this.urlRepository.findByShortCode(shortCode);
         if(!foundUrl.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL does not exist");
+            throw new UrlNotFoundException("URL does not exist");
         }
 
         if(newDto.type() == 2 && newDto.length() < 1) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Temporary links must have a lifetime of 1 minute or more");
+            throw new InvalidInputException("Temporary links must have a lifetime of 1 minute or more");
         }
 
         URL url = foundUrl.get();
 
         if(!user.getId().equals(url.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
+            throw new ForbiddenUpdateException("Forbidden");
         }
 
         URL updated = this.urlMapper.updateURL(newDto, url);
@@ -141,13 +143,13 @@ public class URLService {
     public void deleteUrl(User user, String shortCode) {
         Optional<URL> foundUrl = this.urlRepository.findByShortCode(shortCode);
         if(!foundUrl.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL does not exist");
+            throw new UrlNotFoundException("URL does not exist");
         }
 
         URL url = foundUrl.get();
 
         if(!user.getId().equals(url.getUser().getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
+            throw new ForbiddenUpdateException("Forbidden");
         }
 
         this.urlRepository.deleteUrl(shortCode);
