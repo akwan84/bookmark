@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Login from "./Login";
 import Home from "./Home";
 import makeRequest from "./makeRequest";
+import UserContext from "./context/UserContext";
+import DataContext from "./context/DataContext";
 
 
 function App() {
-	const [loggedIn, setLoggedIn] = useState(false);
-	const [data, setData] = useState([]);
-	const [type, setType] = useState(1);
+	const { loggedIn, setLoggedIn } = useContext(UserContext);
+	const { setData } = useContext(DataContext);
 
 	useEffect(() => {
 		const fetchData = async() => {
@@ -20,32 +21,11 @@ function App() {
 		fetchData();
 	}, []);
 
-	const refreshData = async() => {
-        const response = await makeRequest("GET", "/url", {});
-		if(response.status === 200) {
-			setData(response.data);
-		} else if (response.status === 401) {
-			alert("Session Expired");
-			setLoggedIn(false);
-		} else {
-			alert(response.response.data["message"]);
-		}
-    }
-
 	return (
 		<div className="App">
 			{loggedIn ? 
-				<Home
-					data = {data}
-					refreshData={refreshData}
-					type = {type}
-					setType={setType}
-					setLoggedIn={setLoggedIn}
-				/> :
-				<Login 
-					setLoggedIn = {setLoggedIn}
-					refreshData = {refreshData}
-				/>
+				<Home/> :
+				<Login/>
 			}
 		</div>
 	);

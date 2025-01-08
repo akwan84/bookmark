@@ -1,6 +1,12 @@
+import { useContext } from "react";
 import makeRequest from "./makeRequest";
+import DataContext from "./context/DataContext";
+import UserContext from "./context/UserContext";
 
-const DeleteConfirm = ({ setShowDeleteConfirm, shortCode, refreshData, setLoggedIn }) => {
+const DeleteConfirm = ({ setShowDeleteConfirm, shortCode }) => {
+
+    const { refreshData } = useContext(DataContext);
+    const { setLoggedIn } = useContext(UserContext);
 
     const deleteLink = async() => {
         const response = await makeRequest('DELETE', `/url/${shortCode}`, {});

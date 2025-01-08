@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "./Link";
 import CreationBox from "./CreationBox";
 import UpdateBox from "./UpdateBox";
 import makeRequest from "./makeRequest";
+import DataContext from "./context/DataContext";
+import UserContext from "./context/UserContext";
 
-const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
+const Home = () => {
 
+    const { data } = useContext(DataContext);
+    const { setLoggedIn } = useContext(UserContext);
+
+    const [type, setType] = useState(1);
     const [showOverlay, setShowOverlay] = useState(false);
     const [showUpdateOverlay, setShowUpdateOverlay] = useState(false);
     const [curBookmark, setCurBookmark] = useState({});
@@ -35,36 +41,30 @@ const Home = ({ data, refreshData, type, setType, setLoggedIn }) => {
                 {type === 1 && data.filter(bookmark => bookmark.type === 1).map(bookmark => (
                     <Link 
                         bookmark={bookmark} 
-                        refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
-                        setLoggedIn = {setLoggedIn}
                     />
                 ))}
                 {type === 2 && data.filter(bookmark => bookmark.type === 2).map(bookmark => (
                     <Link 
-                        bookmark={bookmark} 
-                        refreshData={refreshData} 
+                        bookmark={bookmark}  
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
-                        setLoggedIn = {setLoggedIn}
                     />
                 ))}
                 {type === 3 && data.filter(bookmark => bookmark.type === 3).map(bookmark => (
                     <Link 
                         bookmark={bookmark} 
-                        refreshData={refreshData} 
                         setShowUpdateOverlay = {setShowUpdateOverlay} 
                         setCurBookmark = {setCurBookmark}
-                        setLoggedIn = {setLoggedIn}
                     />
                 ))}
             </div>
             {showOverlay && <div className = "overlay">
-                <CreationBox setShowOverlay = {setShowOverlay} refreshData={refreshData} setLoggedIn = {setLoggedIn}/>
+                <CreationBox setShowOverlay = {setShowOverlay}/>
             </div>}
             {showUpdateOverlay && <div className = "overlay">
-                <UpdateBox setShowUpdateOverlay = {setShowUpdateOverlay} refreshData={refreshData} curBookmark={curBookmark} setLoggedIn = {setLoggedIn}/>
+                <UpdateBox setShowUpdateOverlay = {setShowUpdateOverlay} curBookmark={curBookmark}/>
             </div>}
         </div>
     );

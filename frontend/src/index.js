@@ -9,10 +9,16 @@ import './css/link.css';
 import './css/update.css';
 import './css/delete.css';
 import App from './App';
+import { UserProvider } from './context/UserContext';
+import { DataProvider } from './context/DataContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <UserProvider>
+      <DataProvider>
+        <App />
+      </DataProvider>
+    </UserProvider>
   </React.StrictMode>
 );

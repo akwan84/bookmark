@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import makeRequest from "./makeRequest";
 import RegistrationBox from "./RegistrationBox";
+import UserContext from "./context/UserContext";
+import DataContext from "./context/DataContext";
 
-const Login = ({ setLoggedIn, refreshData }) => {
+const Login = () => {
+    const { refreshData } = useContext(DataContext);
+    const { setLoggedIn } = useContext(UserContext);
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showRegOverlay, setShowRegOverlay] = useState(false);

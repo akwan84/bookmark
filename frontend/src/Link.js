@@ -1,7 +1,8 @@
 import { useState } from "react";
 import DeleteConfirm from "./DeleteConfirm";
 
-const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark, setLoggedIn }) => {
+const Link = ({ bookmark, setShowUpdateOverlay, setCurBookmark }) => {
+
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     const copyToClipboard = async(textToCopy) => {
@@ -45,7 +46,7 @@ const Link = ({ bookmark, refreshData, setShowUpdateOverlay, setCurBookmark, set
             <button onClick={() => setShowDeleteConfirm(true)} style={{marginBottom:"1em"}} className={buttonColor}>Delete</button>
             <button onClick={triggerUpdate} className={buttonColor}>Update</button>
             {showDeleteConfirm && <div className = "overlay">
-                <DeleteConfirm setShowDeleteConfirm={setShowDeleteConfirm} shortCode={bookmark.shortCode} refreshData={refreshData} setLoggedIn={setLoggedIn}/>
+                <DeleteConfirm setShowDeleteConfirm={setShowDeleteConfirm} shortCode={bookmark.shortCode} />
             </div>}
         </div>
     );

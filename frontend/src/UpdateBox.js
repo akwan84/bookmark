@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import makeRequest from "./makeRequest";
+import DataContext from "./context/DataContext";
+import UserContext from "./context/UserContext";
 
-const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark, setLoggedIn }) => {
+const UpdateBox = ({ setShowUpdateOverlay, curBookmark }) => {
     const getDiff = () => {
         const curDate = new Date();
         const utcExpDate = new Date(curBookmark.expiration);
@@ -12,6 +14,9 @@ const UpdateBox = ({ setShowUpdateOverlay, refreshData, curBookmark, setLoggedIn
 
         return Math.floor(diff / (1000 * 60));
     }
+
+    const { refreshData } = useContext(DataContext);
+    const { setLoggedIn } = useContext(UserContext);
 
     const [url, setUrl] = useState(curBookmark.fullUrl);
     const [active, setActive] = useState(curBookmark.isActive);

@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import makeRequest from "./makeRequest";
+import DataContext from "./context/DataContext";
+import UserContext from "./context/UserContext";
 
-const CreationBox = ({ setShowOverlay, refreshData, setLoggedIn }) => {
+const CreationBox = ({ setShowOverlay }) => {
+    const { refreshData } = useContext(DataContext);
+    const { setLoggedIn } = useContext(UserContext);
+
     const [selectedType, setSelectedType] = useState("1");
     const [url, setUrl] = useState("");
     const [length, setLength] = useState(1);
